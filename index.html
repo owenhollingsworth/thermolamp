@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThermoLamp — Firmware Installer</title>
+<meta name="description" content="Install or update the ThermoLamp firmware straight from your browser. No Arduino IDE needed.">
+<meta property="og:title" content="ThermoLamp — Firmware Installer">
+<meta property="og:description" content="Install or update the ThermoLamp firmware straight from your browser.">
+<meta property="og:image" content="https://owenafk.github.io/thermolamp/img/og.jpg">
+<meta property="og:url" content="https://owenafk.github.io/thermolamp/">
+<meta name="theme-color" content="#121316">
+<script type="module" src="vendor/esp-web-tools/install-button.js"></script>
+<style>
+  :root {
+    --bg: #121316;
+    --panel: #1b1d22;
+    --line: #2a2d34;
+    --text: #f2efe9;
+    --muted: #a7a8ad;
+    --grad: linear-gradient(90deg, #3b82f6 0%, #5ec8c4 30%, #f2c94c 60%, #f2994a 80%, #eb5a46 100%);
+    /* ESP Web Tools dialog colours */
+    --mdc-theme-primary: #f2994a;
+    --improv-primary-color: #f2994a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); }
+  body {
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  a { color: #f2c94c; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 40px; }
+  .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+  .eyebrow { letter-spacing: .22em; text-transform: uppercase; font-size: 13px; font-weight: 700; color: var(--muted); margin: 0 0 14px; }
+  h1 { font-size: clamp(52px, 8vw, 92px); line-height: .95; margin: 0 0 18px; font-weight: 800; letter-spacing: -.03em; }
+  h1 .lamp { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lede { font-size: 20px; color: #d9d6d0; margin: 0 0 30px; max-width: 30em; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
+  .install-card { position: relative; overflow: hidden; }
+  .install-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--grad); }
+  .install-btn {
+    font: inherit; font-size: 18px; font-weight: 700; color: #121316; background: var(--text);
+    border: 0; border-radius: 999px; padding: 15px 30px; cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .install-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(242,153,74,.35); }
+  .version { color: var(--muted); font-size: 14px; margin: 14px 0 0; }
+  .browsers { color: var(--muted); font-size: 14px; margin: 4px 0 0; }
+  .warn { display: block; background: #3a2318; border: 1px solid #6b3a22; color: #f6d2bd; border-radius: 12px; padding: 14px 16px; font-size: 15px; }
+  .photo { border-radius: 22px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 821 / 1400; max-height: 640px; justify-self: center; }
+  .photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  h2 { font-size: 26px; letter-spacing: -.01em; margin: 64px 0 18px; }
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 14px; }
+  ol.steps li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+  ol.steps li::before {
+    content: counter(s); width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+    font-weight: 800; color: #121316; background: var(--c, #f2efe9);
+  }
+  ol.steps li:nth-child(1) { --c: #3b82f6; } ol.steps li:nth-child(2) { --c: #5ec8c4; }
+  ol.steps li:nth-child(3) { --c: #f2c94c; } ol.steps li:nth-child(4) { --c: #f2994a; }
+  ol.steps li:nth-child(5) { --c: #eb5a46; }
+  ol.steps b { display: block; font-size: 17px; }
+  ol.steps p { margin: 2px 0 0; color: #cfccc6; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; background: #24262c; padding: 1px 6px; border-radius: 6px; }
+  details { border-top: 1px solid var(--line); padding: 14px 0; }
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; font-weight: 600; font-size: 17px; }
+  details p, details ul { color: #cfccc6; margin: 10px 0 0; }
+  footer { margin-top: 64px; color: var(--muted); font-size: 14px; }
+  @media (max-width: 820px) {
+    .wrap { padding-top: 36px; }
+    .hero { grid-template-columns: 1fr; gap: 32px; }
+    .photo { max-height: 460px; width: 70%; }
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Firmware installer</p>
+      <h1>Thermo<br><span class="lamp">Lamp</span></h1>
+      <p class="lede">Install or update your lamp's firmware straight from the browser. No Arduino IDE, libraries or drivers needed.</p>
+
+      <div class="card install-card">
+        <esp-web-install-button manifest="manifest.json">
+          <button slot="activate" class="install-btn">Install ThermoLamp</button>
+          <span slot="unsupported" class="warn">
+            This browser can't talk to USB devices. Open this page in <b>Chrome</b>, <b>Edge</b>, <b>Opera</b> or <b>Firefox 151+</b> on a computer. Safari and phones aren't supported.
+          </span>
+          <span slot="not-allowed" class="warn">
+            The installer only works over a secure (https) connection.
+          </span>
+        </esp-web-install-button>
+        <p class="version" id="version">Firmware</p>
+        <p class="browsers">Chrome, Edge, Opera or Firefox 151+ on Mac, Windows or Linux.</p>
+      </div>
+    </div>
+    <div class="photo"><img src="img/thermolamp.jpg" alt="An assembled ThermoLamp glowing on a desk, its round screen showing 81°F in Bangkok"></div>
+  </section>
+
+  <h2>How to install</h2>
+  <ol class="steps">
+    <li><div><b>Plug the lamp into your computer</b>
+      <p>Use a USB‑C cable into the port on the back of the lamp. It must be a data cable; many cables that come with chargers only carry power.</p></div></li>
+    <li><div><b>Click Install ThermoLamp and pick the port</b>
+      <p>Choose the entry called <code>USB JTAG/serial debug unit</code> (on a Mac it ends in <code>usbmodem…</code>; on Windows it's a <code>COM</code> port).</p></div></li>
+    <li><div><b>Choose whether to erase</b>
+      <p><b style="display:inline">First install:</b> tick <i>Erase device</i> if the board has run other firmware before, such as Waveshare's demo.<br>
+      <b style="display:inline">Updating:</b> leave it unticked so your saved cities and settings are kept.</p></div></li>
+    <li><div><b>Wait for it to finish</b>
+      <p>It takes a minute or two. Keep the tab open and the cable plugged in until it says installation is complete.</p></div></li>
+    <li><div><b>Set up on the touchscreen</b>
+      <p>The lamp restarts by itself (if the screen stays dark, unplug it and plug it back in). Then join your Wi‑Fi and pick your city right on the screen.</p></div></li>
+  </ol>
+
+  <h2>Troubleshooting</h2>
+  <details>
+    <summary>No port shows up in the list</summary>
+    <ul>
+      <li>Try another USB‑C cable. A power‑only cable is the most common cause.</li>
+      <li>Plug straight into the computer rather than through a hub or monitor.</li>
+      <li>Still nothing? Hold the <b>BOOT</b> button on the board while plugging the cable in, then release it and click Install again.</li>
+    </ul>
+  </details>
+  <details>
+    <summary>"Failed to connect" or the install stops partway</summary>
+    <ul>
+      <li>Close anything else using the port: Arduino IDE's Serial Monitor, another installer tab, or a serial terminal.</li>
+      <li>Hold <b>BOOT</b> while plugging in (see above) and try again. An interrupted install is safe to retry.</li>
+    </ul>
+  </details>
+  <details>
+    <summary>The installer finished but the screen shows thin lines</summary>
+    <p>Make sure you installed from this page. Firmware built yourself in Arduino IDE needs Waveshare's XIP libraries (see the build guide); without them the display shows lines whenever Wi‑Fi is busy.</p>
+  </details>
+  <details>
+    <summary>Linux: permission denied on the port</summary>
+    <p>Add yourself to the <code>dialout</code> group (<code>sudo usermod -aG dialout $USER</code>), log out and back in, then try again.</p>
+  </details>
+
+  <footer>
+    ThermoLamp by <a href="https://github.com/owenafk">owenafk</a>.
+    Installer powered by <a href="https://esphome.github.io/esp-web-tools/">ESP Web Tools</a> (Apache 2.0).
+  </footer>
+</main>
+<script>
+  fetch("manifest.json").then(r => r.json()).then(m => {
+    document.getElementById("version").textContent = "Firmware v" + m.version + " · ESP32‑S3";
+  }).catch(() => {});
+</script>
+</body>
+</html>
