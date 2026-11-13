@@ -1,7 +1,7 @@
 # ThermoLamp firmware installer
 
 Browser-based installer for the full-size ThermoLamp (Waveshare ESP32-S3-Touch-LCD-2.8C), served by GitHub Pages:
-**https://owenafk.github.io/thermolamp/**
+**https://owenhollingsworth.github.io/thermolamp/**
 
 This repo holds only the installer page and compiled firmware, not the source.
 
