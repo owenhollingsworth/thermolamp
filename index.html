@@ -106,13 +106,13 @@
       <p>Use a USB‑C cable into the port on the back of the lamp. It must be a data cable; many cables that come with chargers only carry power.</p></div></li>
     <li><div><b>Click Install ThermoLamp and pick the port</b>
       <p>Choose the entry called <code>USB JTAG/serial debug unit</code> (on a Mac it ends in <code>usbmodem…</code>; on Windows it's a <code>COM</code> port).</p></div></li>
-    <li><div><b>Choose whether to erase</b>
-      <p><b style="display:inline">First install:</b> tick <i>Erase device</i> if the board has run other firmware before, such as Waveshare's demo.<br>
-      <b style="display:inline">Updating:</b> leave it unticked so your saved cities and settings are kept.</p></div></li>
-    <li><div><b>Wait for it to finish</b>
-      <p>It takes a minute or two. Keep the tab open and the cable plugged in until it says installation is complete.</p></div></li>
-    <li><div><b>Set up on the touchscreen</b>
-      <p>The lamp restarts by itself (if the screen stays dark, unplug it and plug it back in). Then join your Wi‑Fi and pick your city right on the screen.</p></div></li>
+    <li><div><b>Install or update</b>
+      <p><b style="display:inline">First install:</b> tick <i>Erase device</i> if the board has run other firmware before, such as Waveshare's demo. It takes a minute or two; keep the tab open and the cable plugged in.<br>
+      <b style="display:inline">Updating:</b> lamps on firmware 1.1 or later are recognised and you'll see <i>Update ThermoLamp</i>, which keeps your saved cities and settings. (On 1.0.x, leave <i>Erase device</i> unticked.)</p></div></li>
+    <li><div><b>Connect to Wi‑Fi</b>
+      <p>When it says installation is complete, click <i>Next</i> (then <i>Connect to Wi‑Fi</i> if you see a menu), pick your network, type the password and click <i>Connect</i>. The lamp checks the connection works before saving it. You can also skip this and set up Wi‑Fi on the lamp's touchscreen.</p></div></li>
+    <li><div><b>Add your city on the touchscreen</b>
+      <p>The lamp opens Settings: tap <i>+ Add city</i> and search for your city. If the screen stays dark after installing, unplug the lamp and plug it back in.</p></div></li>
   </ol>
 
   <h2>Troubleshooting</h2>
@@ -134,6 +134,14 @@
   <details>
     <summary>The installer finished but the screen shows thin lines</summary>
     <p>Make sure you installed from this page. Firmware built yourself in Arduino IDE needs Waveshare's XIP libraries (see the build guide); without them the display shows lines whenever Wi‑Fi is busy.</p>
+  </details>
+  <details>
+    <summary>Changing the lamp's Wi‑Fi later</summary>
+    <p>Plug the lamp in, click <b>Install ThermoLamp</b>, pick the port and choose <i>Change Wi‑Fi</i>. Or use Settings → Wi‑Fi on the lamp's touchscreen.</p>
+  </details>
+  <details>
+    <summary>The Wi‑Fi step doesn't appear, or says "Disconnected"</summary>
+    <p>On some computers the lamp's USB connection drops for a moment while it restarts after installing. Close the window, unplug and replug the lamp, click <b>Install ThermoLamp</b> again and choose <i>Connect to Wi‑Fi</i>.</p>
   </details>
   <details>
     <summary>Linux: permission denied on the port</summary>

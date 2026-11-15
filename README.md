@@ -20,12 +20,12 @@ The parts are flashed separately on purpose, not as Arduino's 16 MB `.merged.bin
 
 ## Publishing a new firmware release
 
-1. In Arduino IDE (board package 3.0.2 **with Waveshare's XIP libraries**, OPI PSRAM, QIO 80 MHz, 16 MB, *16M Flash (3MB APP/9.9MB FATFS)*), run **Sketch → Export Compiled Binary**.
+1. In Arduino IDE (board package 3.0.2 **with Waveshare's XIP libraries**, OPI PSRAM, QIO 80 MHz, 16 MB, *16M Flash (3MB APP/9.9MB FATFS)*, USB Mode *Hardware CDC and JTAG*), run **Sketch → Export Compiled Binary**. These Tools settings reset when the board is re-detected, so check them before every release.
 2. From `firmware/ThermoLamp/build/esp32.esp32.esp32s3/`, copy:
    * `ThermoLamp.ino.bin` → `firmware/thermolamp.bin`
    * `ThermoLamp.ino.bootloader.bin` → `firmware/bootloader.bin`
    * `ThermoLamp.ino.partitions.bin` → `firmware/partitions.bin` (only changes if the partition scheme changes)
-3. Bump `"version"` in `manifest.json`.
+3. Bump `"version"` in `manifest.json` to match `FW_VERSION` in `config.h` (the installer compares them to offer "Update ThermoLamp").
 4. Commit and push. Pages republishes in about a minute.
 
 `boot_app0.bin` doesn't change between builds.
