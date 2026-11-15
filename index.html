@@ -154,7 +154,11 @@
   </footer>
 </main>
 <script>
-  fetch("manifest.json").then(r => r.json()).then(m => {
+  // Always use a fresh manifest: GitHub Pages lets browsers reuse files for 10 minutes, which would otherwise show
+  // (and install) the previous release right after an update. Firmware files carry their version in the name.
+  const manifestUrl = "manifest.json?v=" + Date.now();
+  document.querySelector("esp-web-install-button").setAttribute("manifest", manifestUrl);
+  fetch(manifestUrl, { cache: "no-store" }).then(r => r.json()).then(m => {
     document.getElementById("version").textContent = "Firmware v" + m.version + " · ESP32‑S3";
   }).catch(() => {});
 </script>
